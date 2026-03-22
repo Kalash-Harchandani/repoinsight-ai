@@ -57,11 +57,16 @@ export const generateEmbedding = async (text) => {
  */
 export const indexCodebase = async (
   files,
-  indexName = process.env.PINECONE_INDEX || "repoinsight",
+  onProgress,
   namespace = "default"
 ) => {
+  if (process.env.USE_DUMMY_AI === "true") {
+    console.log("🤖 DUMMY MODE: Skipping real embedding generation.");
+    return;
+  }
   try {
     const pinecone = getPC();
+    const indexName = process.env.PINECONE_INDEX || "repoinsight";
     const index = pinecone.index(indexName);
     const vectors = [];
 

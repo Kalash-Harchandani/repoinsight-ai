@@ -5,6 +5,17 @@ import HomeView from './components/HomeView';
 import AnalysisView from './components/AnalysisView';
 import Footer from './components/Footer';
 
+const ErrorAlert = ({ message, onClose }) => (
+  <div className="custom-alert-overlay">
+    <div className="custom-alert-box animate-pop">
+      <div className="alert-icon">⚠️</div>
+      <div className="alert-title">Attention</div>
+      <div className="alert-message">{message}</div>
+      <button className="alert-close-btn" onClick={onClose}>Got it</button>
+    </div>
+  </div>
+);
+
 function App() {
   const [view, setView] = useState('home');
   const [repoUrl, setRepoUrl] = useState('');
@@ -13,6 +24,11 @@ function App() {
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState([]);
   const [querying, setQuerying] = useState(false);
+  const [error, setError] = useState(null);
+
+  React.useEffect(() => {
+    document.title = view === 'home' ? 'RepoMind AI | Index Repository' : 'RepoMind AI | Codebase Analysis';
+  }, [view]);
 
   const handleViewChange = (newView) => {
     if (newView === 'home' && (view === 'query' || indexed)) {
@@ -39,10 +55,10 @@ function App() {
         setTimeout(() => setView('query'), 1000);
       } else {
         const data = await response.json();
-        alert('Error: ' + data.error);
+        setError(data.error || 'Failed to index repository.');
       }
     } catch (err) {
-      alert('Failed to connect to backend.');
+      setError('Failed to connect to backend.');
     } finally {
       setIndexing(false);
     }
@@ -70,7 +86,7 @@ function App() {
       const aiMessage = { role: 'ai', content: data.answer };
       setMessages(prev => [...prev, aiMessage]);
     } catch (err) {
-      alert('Failed to query backend.');
+      setError('Failed to query backend. Please check your connection.');
     } finally {
       setQuerying(false);
     }
@@ -102,6 +118,7 @@ function App() {
       </main>
 
       <Footer />
+      {error && <ErrorAlert message={error} onClose={() => setError(null)} />}
     </div>
   );
 }
