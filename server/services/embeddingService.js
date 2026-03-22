@@ -60,10 +60,6 @@ export const indexCodebase = async (
   onProgress,
   namespace = "default"
 ) => {
-  if (process.env.USE_DUMMY_AI === "true") {
-    console.log("🤖 DUMMY MODE: Skipping real embedding generation.");
-    return;
-  }
   try {
     const pinecone = getPC();
     const indexName = process.env.PINECONE_INDEX || "repoinsight";

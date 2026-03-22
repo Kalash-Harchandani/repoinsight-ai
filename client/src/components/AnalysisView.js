@@ -35,12 +35,14 @@ const Typewriter = ({ text, speed = 15 }) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    setDisplayedText('');
-    setIndex(0);
+    if (text) {
+      setDisplayedText('');
+      setIndex(0);
+    }
   }, [text]);
 
   useEffect(() => {
-    if (index < text.length) {
+    if (text && index < text.length) {
       const timeout = setTimeout(() => {
         setDisplayedText((prev) => prev + text[index]);
         setIndex((prev) => prev + 1);

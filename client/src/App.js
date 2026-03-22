@@ -27,7 +27,7 @@ function App() {
   const [error, setError] = useState(null);
 
   React.useEffect(() => {
-    document.title = view === 'home' ? 'RepoMind AI | Index Repository' : 'RepoMind AI | Codebase Analysis';
+    document.title = view === 'home' ? 'RepoInsight | Index Repository' : 'RepoInsight | Codebase Analysis';
   }, [view]);
 
   const handleViewChange = (newView) => {
@@ -82,9 +82,13 @@ function App() {
       });
       const data = await response.json();
       
-      // Add AI response to history
-      const aiMessage = { role: 'ai', content: data.answer };
-      setMessages(prev => [...prev, aiMessage]);
+      if (response.ok) {
+        // Add AI response to history
+        const aiMessage = { role: 'ai', content: data.answer };
+        setMessages(prev => [...prev, aiMessage]);
+      } else {
+        setError(data.error || 'The AI failed to generate a response.');
+      }
     } catch (err) {
       setError('Failed to query backend. Please check your connection.');
     } finally {

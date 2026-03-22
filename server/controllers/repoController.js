@@ -41,7 +41,7 @@ export const indexRepository = async (req, res) => {
     });
   } catch (error) {
     console.error('Indexing Error:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'We encountered an issue indexing this repository. Please ensure the URL is correct and public.' });
   }
 };
 
@@ -63,6 +63,6 @@ export const askQuestion = async (req, res) => {
     res.status(200).json({ answer });
   } catch (error) {
     console.error('Query Error:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'RepoMind AI is having trouble processing your request right now. Please try again in a moment.' });
   }
 };

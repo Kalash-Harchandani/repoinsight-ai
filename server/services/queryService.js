@@ -32,10 +32,6 @@ const getPC = () => {
  * @returns {Promise<string>} - The generated answer from Gemini.
  */
 export const queryCodebase = async (question, namespace = "default") => {
-  if (process.env.USE_DUMMY_AI === 'true') {
-    console.log('🤖 DUMMY MODE: Returning mock response.');
-    return `[DEMO MODE] I see you're asking about: "${question}" in the ${namespace} namespace. Real Gemini API operations are currently disabled as requested.`;
-  }
   try {
     const pinecone = getPC();
     const index = pinecone.index(process.env.PINECONE_INDEX || "repoinsight");
@@ -71,7 +67,7 @@ export const queryCodebase = async (question, namespace = "default") => {
     // 3. Generate the final answer using Gemini
     const chatModel = 'gemini-2.5-flash-lite';
     const prompt = `
-      You are "RepoInsight AI", an expert software engineer assistant.
+      You are "RepoMind AI", an expert software engineer assistant.
       Use the provided code context below to answer the user's question about the repository.
       
       Rules:
