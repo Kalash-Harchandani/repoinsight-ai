@@ -315,21 +315,20 @@ footer {
   bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 2rem);
-  max-width: 800px;
+  width: calc(100% - 3rem);
+  max-width: 1100px; /* Matching chat container width */
   z-index: 100;
 }
 
 .chat-input-container {
-  background: rgba(20, 20, 20, 0.85);
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 0.7rem 0.7rem 0.7rem 1.8rem;
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  background: rgba(24, 24, 27, 0.85); /* Zinc-900 with transparency */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px; /* More curvy */
+  padding: 0.6rem 1.2rem;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
 }
 
 .chat-input-container input {
@@ -366,6 +365,14 @@ footer {
 .chat-send-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+.inline-code-clean {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  font-family: inherit;
+  color: #e4e4e7; /* Zinc-200 */
 }
 
 .message-bubble {

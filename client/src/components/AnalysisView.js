@@ -1,5 +1,35 @@
 import React, { useEffect, useState } from 'react';
 
+const MarkdownText = ({ text }) => {
+  if (!text) return null;
+  
+  // 1. Handle line-based formatting (bullets)
+  const lines = text.split('\n').map(line => {
+    // Replace '* ' or '- ' at the start with a dot '•'
+    return line.replace(/^(\s*)[*-]\s+/, '$1• ');
+  });
+
+  const processedText = lines.join('\n');
+
+  // 2. Handle inline formatting (bold and backticks)
+  // Split by both **bold** and `code`
+  const parts = processedText.split(/(\*\*.*?\*\*|`.*?`)/g);
+  
+  return (
+    <div style={{ whiteSpace: 'pre-wrap' }}>
+      {parts.map((part, i) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={i}>{part.slice(2, -2)}</strong>;
+        }
+        if (part.startsWith('`') && part.endsWith('`')) {
+          return <span key={i} className="inline-code-clean">{part.slice(1, -1)}</span>;
+        }
+        return part;
+      })}
+    </div>
+  );
+};
+
 const Typewriter = ({ text, speed = 15 }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [index, setIndex] = useState(0);
@@ -19,16 +49,11 @@ const Typewriter = ({ text, speed = 15 }) => {
     }
   }, [index, text, speed]);
 
-  return (
-    <div style={{ whiteSpace: 'pre-wrap' }}>
-      {displayedText}
-      {index < text.length && <span className="typewriter-cursor"></span>}
-    </div>
-  );
+  return <MarkdownText text={displayedText + (index < text.length ? '|' : '')} />;
 };
 
 const AnalysisView = ({ repoUrl, question, setQuestion, handleQuery, querying, messages }) => {
-  const [summaryRequested, setSummaryRequested] = useState(false);
+  const summaryRequestedRef = React.useRef(false);
   const scrollRef = React.useRef(null);
 
   const getRepoName = (url) => {
@@ -43,11 +68,11 @@ const AnalysisView = ({ repoUrl, question, setQuestion, handleQuery, querying, m
   const repoName = getRepoName(repoUrl);
 
   useEffect(() => {
-    if (repoUrl && messages.length === 0 && !querying && !summaryRequested) {
-      setSummaryRequested(true);
+    if (repoUrl && messages.length === 0 && !querying && !summaryRequestedRef.current) {
+      summaryRequestedRef.current = true;
       handleQuery('Provide a concise technical summary (max 150 words) of this repository. Use strong bullet points for architecture and purpose.', true);
     }
-  }, [repoUrl, messages.length, querying, summaryRequested, handleQuery]);
+  }, [repoUrl, messages.length, querying, handleQuery]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -77,7 +102,7 @@ const AnalysisView = ({ repoUrl, question, setQuestion, handleQuery, querying, m
               {msg.role === 'ai' && idx === filtered.length - 1 ? (
                 <Typewriter text={msg.content} />
               ) : (
-                <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div>
+                <MarkdownText text={msg.content} />
               )}
             </div>
           </div>
