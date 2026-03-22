@@ -9,6 +9,7 @@ const allowedOriginPattern = /^https:\/\/.*\.vercel\.app$|^http:\/\/localhost:\d
 
 app.use(cors({
   origin: (origin, callback) => {
+    console.log(`CORS check for origin: ${origin}`);
     // Allow no-origin requests (curl, Postman) and any *.vercel.app or localhost
     if (!origin || allowedOriginPattern.test(origin)) {
       callback(null, true);
