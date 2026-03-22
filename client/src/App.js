@@ -14,6 +14,16 @@ function App() {
   const [querying, setQuerying] = useState(false);
   const [answer, setAnswer] = useState('');
 
+  const handleViewChange = (newView) => {
+    if (newView === 'home' && (view === 'query' || indexed)) {
+      setRepoUrl('');
+      setIndexed(false);
+      setQuestion('');
+      setAnswer('');
+    }
+    setView(newView);
+  };
+
   const handleIndex = async () => {
     if (!repoUrl) return;
     setIndexing(true);
@@ -25,7 +35,8 @@ function App() {
       });
       if (response.ok) {
         setIndexed(true);
-        setTimeout(() => setView('query'), 1500);
+        // Auto-redirect to analysis after 1 second
+        setTimeout(() => setView('query'), 1000);
       } else {
         const data = await response.json();
         alert('Error: ' + data.error);
@@ -58,9 +69,9 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar view={view} setView={setView} />
+      <Navbar view={view} setView={handleViewChange} />
 
-      <main>
+      <main className={`main-container ${view === 'home' ? 'view-home' : 'view-analysis'}`}>
         {view === 'home' ? (
           <HomeView 
             repoUrl={repoUrl} 
@@ -71,6 +82,7 @@ function App() {
           />
         ) : (
           <AnalysisView 
+            repoUrl={repoUrl}
             question={question} 
             setQuestion={setQuestion} 
             handleQuery={handleQuery} 

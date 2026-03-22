@@ -24,9 +24,10 @@ const HomeView = ({ repoUrl, setRepoUrl, handleIndex, indexing, indexed }) => {
                 onChange={(e) => setRepoUrl(e.target.value)}
               />
               <button className="btn-primary" onClick={handleIndex} disabled={indexing}>
-                {indexing ? 'Link Repo' : 'Link Repo'}
+                {indexing ? 'Syncing...' : 'Link Repo'}
               </button>
             </div>
+            {indexed && <div className="success-tag animate">✓ Repository Linked</div>}
           </div>
         </div>
 
