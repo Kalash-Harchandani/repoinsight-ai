@@ -1,57 +1,85 @@
-# RepoInsight AI
+![Untitled design](https://github.com/user-attachments/assets/53492140-0420-4fcf-9c77-b70435edda83)
 
+
+
+# RepoInsight AI ⚡
 ### RAG-powered Code Intelligence System
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge&logo=node.js&logoColor=white" />
-  <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
-  <img src="https://img.shields.io/badge/Pinecone-Vector_DB-6E57E0?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Gemini-AI-000000?style=for-the-badge&logo=google" />
-  <img src="https://img.shields.io/badge/AWS-EC2-FF9900?style=for-the-badge&logo=amazonaws&logoColor=black" />
+<p>
+  <img src="https://skillicons.dev/icons?i=react,nodejs,express,tailwind,docker,aws,vercel" />
+</p>
+
+<p>
+  <img src="https://img.shields.io/badge/Pinecone-Vector_Search-111827?style=for-the-badge" />
+  
 </p>
 
 </div>
 
 ---
 
-## Overview
+## 🧠 Overview
 
-**RepoInsight AI** transforms complex GitHub repositories into **searchable, explainable knowledge systems** using Retrieval-Augmented Generation (RAG).
+**RepoInsight AI** is a high-performance, full-stack system that transforms GitHub repositories into **searchable, explainable knowledge systems** using **Retrieval-Augmented Generation (RAG)**.
 
 By combining **semantic vector search (Pinecone)** with **LLM reasoning (Google Gemini)**, it enables developers to explore unfamiliar codebases through natural language — reducing onboarding time and improving architectural understanding.
 
 ---
 
-## Core Features
+## ✨ Key Features
 
-### RepoMind AI
-Conversational interface that understands repository structure, explains logic, and answers deep technical questions using contextual retrieval.
+### 🧩 RepoMind AI
+- Conversational interface for interacting with repositories  
+- Explains code logic, architecture, and relationships  
+- Context-aware responses using retrieval + LLM reasoning  
 
-### Semantic Code Search
-Top-k vector similarity search over embedded code chunks enables precise, context-aware querying across entire repositories.
+### 🔍 Semantic Code Search
+- Top-k similarity search over embedded code chunks  
+- Accurate, context-rich answers across entire repositories  
 
-### Live Repository Indexing
-Automatically clones and processes public GitHub repositories, building a structured semantic representation in seconds.
+### ⚡ Live Repository Indexing
+- Clones and processes public GitHub repositories  
+- Generates embeddings in seconds for instant querying  
 
-### Modern Interface
-Responsive React-based frontend with a minimal, dark-first design system and smooth interaction flows.
+### 🎯 Modern Interface
+- Clean, responsive React frontend  
+- Dark-first UI with smooth UX  
 
-### Production Deployment
-Backend deployed on AWS EC2 with a scalable Express server, frontend hosted on Vercel.
+### 🚀 Production Deployment
+- Backend hosted on AWS EC2  
+- Frontend deployed via Vercel for global performance  
 
 ---
 
-## Tech Stack
+## 🚀 Technical Highlights
+
+- **End-to-End RAG Pipeline**  
+  Integrated Pinecone vector retrieval with Gemini-based reasoning for contextual outputs  
+
+- **Optimized Embedding Pipeline**  
+  Intelligent chunking strategy for improved semantic relevance  
+
+- **Low-Latency Querying**  
+  Fast top-k retrieval + efficient response generation  
+
+- **Scalable Architecture**
+  Routes → Controllers → Services → Utils
+
+
+---
+
+## ⚙️ Tech Stack
 
 ### Frontend
-- React 19  
-- Custom CSS (performance-focused, no UI bloat)  
+- React.js  
+- Tailwind CSS  
 - Vercel  
 
 ### Backend & AI
-- Node.js + Express  
+- Node.js  
+- Express.js  
 - Google Gemini API (`@google/genai`)  
-- Pinecone (vector database)  
+- Pinecone (Vector Database)  
 - AWS EC2  
 
 ### Tooling
@@ -61,16 +89,15 @@ Backend deployed on AWS EC2 with a scalable Express server, frontend hosted on V
 
 ---
 
-## System Architecture
+## 📊 System Architecture
 
 ```text
 User Query
-   ↓
+ ↓
 RepoMind AI (Gemini)
-   ↓
+ ↓
 Retrieve Context (Pinecone Top-K)
-   ↓
+ ↓
 Augmented Prompt
-   ↓
+ ↓
 LLM Response (Context-aware)
-
