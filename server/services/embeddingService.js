@@ -35,10 +35,10 @@ export const generateEmbedding = async (text) => {
   try {
     const ai = getGenAI();
     const response = await ai.models.embedContent({
-      model: "gemini-embedding-001", // ✅ correct model
-      contents: text,              // ✅ correct format
+      model: "gemini-embedding-001",
+      contents: text,
       config: {
-        outputDimensionality: 768, // ✅ match Pinecone index dimension
+        outputDimensionality: 768,
       },
     });
 

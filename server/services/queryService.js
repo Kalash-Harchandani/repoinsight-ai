@@ -31,12 +31,13 @@ const getPC = () => {
  * @param {string} namespace - The Pinecone namespace for the repository.
  * @returns {Promise<string>} - The generated answer from Gemini.
  */
-export const queryCodebase = async (question, namespace) => {
+export const queryCodebase = async (question, namespace = "default") => {
   try {
-    console.log(`🔍 Querying codebase for: "${question}" in namespace: ${namespace}`);
-
-    const ai = getGenAI();
     const pinecone = getPC();
+    const index = pinecone.index(process.env.PINECONE_INDEX || "repoinsight");
+    const ai = getGenAI();
+
+    console.log(`🔍 Querying codebase for: "${question}" in namespace: ${namespace}`);
 
     // 1. Generate embedding for the question
     const embedResponse = await ai.models.embedContent({
@@ -46,14 +47,12 @@ export const queryCodebase = async (question, namespace) => {
         outputDimensionality: 768,
       },
     });
-    const queryVector = embedResponse.embeddings[0].values;
+    const questionEmbedding = embedResponse.embeddings[0].values;
 
-    // 2. Search Pinecone for relevant context
-    const indexName = process.env.PINECONE_INDEX || 'repoinsight';
-    const index = pinecone.index(indexName);
+    // 2. Search Pinecone for context
     const queryResponse = await index.namespace(namespace).query({
-      vector: queryVector,
-      topK: 5,
+      vector: questionEmbedding,
+      topK: 10,
       includeMetadata: true,
     });
 
@@ -61,13 +60,12 @@ export const queryCodebase = async (question, namespace) => {
       return "I couldn't find any relevant code in this repository to answer your question.";
     }
 
-    // 3. Prepare context for Gemini
     const context = queryResponse.matches
-      .map((match) => `FILE: ${match.metadata.path}\nCONTENT:\n${match.metadata.content}`)
+      .map((match) => `File: ${match.metadata.path}\nContent: ${match.metadata.content}`)
       .join('\n\n---\n\n');
 
-    // 4. Generate the final answer using Gemini
-    const chatModel = 'gemini-2.5-flash';
+    // 3. Generate the final answer using Gemini
+    const chatModel = 'gemini-2.5-flash-lite';
     const prompt = `
       You are "RepoInsight AI", an expert software engineer assistant.
       Use the provided code context below to answer the user's question about the repository.
@@ -84,8 +82,8 @@ export const queryCodebase = async (question, namespace) => {
     `;
 
     const result = await ai.models.generateContent({
-       model: chatModel,
-       contents: prompt
+      model: chatModel,
+      contents: prompt
     });
 
     return result.candidates[0].content.parts[0].text;

@@ -27,8 +27,9 @@ const Typewriter = ({ text, speed = 15 }) => {
   );
 };
 
-const AnalysisView = ({ repoUrl, question, setQuestion, handleQuery, querying, answer }) => {
+const AnalysisView = ({ repoUrl, question, setQuestion, handleQuery, querying, messages }) => {
   const [summaryRequested, setSummaryRequested] = useState(false);
+  const scrollRef = React.useRef(null);
 
   const getRepoName = (url) => {
     if (!url) return '';
@@ -42,30 +43,52 @@ const AnalysisView = ({ repoUrl, question, setQuestion, handleQuery, querying, a
   const repoName = getRepoName(repoUrl);
 
   useEffect(() => {
-    if (repoUrl && !answer && !querying && !summaryRequested) {
+    if (repoUrl && messages.length === 0 && !querying && !summaryRequested) {
       setSummaryRequested(true);
-      handleQuery('Give me a high-level technical summary of this repository, its architecture, and main purpose.');
+      handleQuery('Provide a concise technical summary (max 150 words) of this repository. Use strong bullet points for architecture and purpose.', true);
     }
-  }, [repoUrl, answer, querying, summaryRequested, handleQuery]);
+  }, [repoUrl, messages.length, querying, summaryRequested, handleQuery]);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, querying]);
 
   return (
     <div className="repomind-chat-container animate">
       {/* Scrollable Chat Area */}
-      <div className="chat-scroll-area">
-        <div className="message-bubble message-ai">
-          <div className="bubble-header">
-            {repoUrl ? `RepoMind AI : ${repoName}` : 'RepoMind AI'}
+      <div className="chat-scroll-area" ref={scrollRef}>
+        {messages.length === 0 && !querying && (
+          <div className="message-bubble message-ai initial-msg">
+            <div className="bubble-header">RepoMind AI</div>
+            <div className="bubble-content">
+              {repoUrl ? 'Initializing technical analysis...' : 'Please link a repository on the Home page to start using RepoMind AI.'}
+            </div>
           </div>
-          <div className="bubble-content">
-            {querying ? (
-              <div className="animate">RepoMind is thinking...</div>
-            ) : answer ? (
-              <Typewriter text={answer} />
-            ) : (
-              <div>{repoUrl ? 'RepoMind AI is ready. What would you like to know about this codebase?' : 'Please link a repository on the Home page to start using RepoMind AI.'}</div>
-            )}
+        )}
+
+        {messages.filter(m => !m.hidden).map((msg, idx, filtered) => (
+          <div key={idx} className={`message-bubble ${msg.role === 'ai' ? 'message-ai' : 'message-user'}`}>
+            <div className="bubble-header">
+              {msg.role === 'ai' ? `RepoMind AI : ${repoName}` : 'YOU'}
+            </div>
+            <div className="bubble-content">
+              {msg.role === 'ai' && idx === filtered.length - 1 ? (
+                <Typewriter text={msg.content} />
+              ) : (
+                <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div>
+              )}
+            </div>
           </div>
-        </div>
+        ))}
+
+        {querying && (
+          <div className="message-bubble message-ai thinking">
+            <div className="bubble-header">RepoMind AI</div>
+            <div className="bubble-content animate">RepoMind is thinking...</div>
+          </div>
+        )}
       </div>
 
       {/* Sticky Bottom Input Bar */}

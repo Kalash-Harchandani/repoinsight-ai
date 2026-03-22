@@ -11,15 +11,15 @@ function App() {
   const [indexing, setIndexing] = useState(false);
   const [indexed, setIndexed] = useState(false);
   const [question, setQuestion] = useState('');
+  const [messages, setMessages] = useState([]);
   const [querying, setQuerying] = useState(false);
-  const [answer, setAnswer] = useState('');
 
   const handleViewChange = (newView) => {
     if (newView === 'home' && (view === 'query' || indexed)) {
       setRepoUrl('');
       setIndexed(false);
       setQuestion('');
-      setAnswer('');
+      setMessages([]);
     }
     setView(newView);
   };
@@ -48,10 +48,16 @@ function App() {
     }
   };
 
-  const handleQuery = async (pilledQuestion) => {
+  const handleQuery = async (pilledQuestion, isHidden = false) => {
     const q = pilledQuestion || question;
     if (!repoUrl || !q) return;
+
+    // Add user message to history
+    const userMessage = { role: 'user', content: q, hidden: isHidden };
+    setMessages(prev => [...prev, userMessage]);
+    setQuestion('');
     setQuerying(true);
+
     try {
       const response = await fetch('http://localhost:5005/api/query', {
         method: 'POST',
@@ -59,7 +65,10 @@ function App() {
         body: JSON.stringify({ repoUrl, question: q }),
       });
       const data = await response.json();
-      setAnswer(data.answer);
+      
+      // Add AI response to history
+      const aiMessage = { role: 'ai', content: data.answer };
+      setMessages(prev => [...prev, aiMessage]);
     } catch (err) {
       alert('Failed to query backend.');
     } finally {
@@ -87,7 +96,7 @@ function App() {
             setQuestion={setQuestion} 
             handleQuery={handleQuery} 
             querying={querying} 
-            answer={answer} 
+            messages={messages} 
           />
         )}
       </main>
