@@ -44,7 +44,7 @@ function App() {
     if (!repoUrl) return;
     setIndexing(true);
     try {
-      const response = await fetch('http://localhost:5005/api/index', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/index`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ repoUrl }),
@@ -75,7 +75,7 @@ function App() {
     setQuerying(true);
 
     try {
-      const response = await fetch('http://localhost:5005/api/query', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ repoUrl, question: q }),
