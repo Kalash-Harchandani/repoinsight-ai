@@ -65,20 +65,20 @@ function App() {
 
       <main>
         {view === 'home' ? (
-          <HomeView 
-            repoUrl={repoUrl} 
-            setRepoUrl={setRepoUrl} 
-            handleIndex={handleIndex} 
-            indexing={indexing} 
-            indexed={indexed} 
+          <HomeView
+            repoUrl={repoUrl}
+            setRepoUrl={setRepoUrl}
+            handleIndex={handleIndex}
+            indexing={indexing}
+            indexed={indexed}
           />
         ) : (
-          <AnalysisView 
-            question={question} 
-            setQuestion={setQuestion} 
-            handleQuery={handleQuery} 
-            querying={querying} 
-            answer={answer} 
+          <AnalysisView
+            question={question}
+            setQuestion={setQuestion}
+            handleQuery={handleQuery}
+            querying={querying}
+            answer={answer}
           />
         )}
       </main>
