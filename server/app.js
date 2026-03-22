@@ -5,16 +5,12 @@ import repoRoutes from './routes/repoRoutes.js';
 const app = express();
 
 // Middleware
-const allowedOrigins = [
-  'https://repoinsight-ai.vercel.app',
-  'http://localhost:3000',
-  'http://localhost:3001',
-];
+const allowedOriginPattern = /^https:\/\/.*\.vercel\.app$|^http:\/\/localhost:\d+$/;
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. curl, Postman, server-to-server)
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow no-origin requests (curl, Postman) and any *.vercel.app or localhost
+    if (!origin || allowedOriginPattern.test(origin)) {
       callback(null, true);
     } else {
       callback(new Error(`CORS policy: origin ${origin} not allowed`));
