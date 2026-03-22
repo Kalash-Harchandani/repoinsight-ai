@@ -10,10 +10,10 @@ const HomeView = ({ repoUrl, setRepoUrl, handleIndex, indexing, indexed }) => {
           and answer your most complex technical questions instantly.
         </p>
         
-        <div className="card">
-          <h2>Connect Repository</h2>
+        <div style={{ padding: '0 1rem' }}>
+          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Connect Repository</h2>
           {indexed && <div className="status-badge">✅ Repository synced successfully</div>}
-          <div className="input-group">
+          <div className="input-group" style={{ maxWidth: '500px' }}>
             <input 
               type="text" 
               placeholder="Enter GitHub Repository URL" 
