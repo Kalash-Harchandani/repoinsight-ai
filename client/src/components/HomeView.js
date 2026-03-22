@@ -32,18 +32,18 @@ const HomeView = ({ repoUrl, setRepoUrl, handleIndex, indexing, indexed }) => {
         </div>
 
         <div className="card">
-          <h2 style={{ fontSize: '1.4rem', marginBottom: '2rem' }}>How it helps</h2>
+          <h2 style={{ fontSize: '1.4rem', marginBottom: '2rem' }}>How It Works</h2>
           <div style={{ marginBottom: '2.5rem' }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#fff' }}>1. Sync your repo</h3>
-            <p style={{ fontSize: '1rem' }}>We crawl every folder and file to understand the architecture.</p>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#fff' }}>1. Sync Your Repository</h3>
+            <p style={{ fontSize: '1rem' }}>Instantly ingest your entire codebase. Every file, folder, and dependency is mapped into a clean, structured system.</p>
           </div>
           <div style={{ marginBottom: '2.5rem' }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#fff' }}>2. AI Analysis</h3>
-            <p style={{ fontSize: '1rem' }}>We build a secure, private brain for your repository that understands logic.</p>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#fff' }}>2. Vectorize and Understand</h3>
+            <p style={{ fontSize: '1rem' }}>Your code is transformed into high dimensional semantic vectors that capture logic, relationships, and context with depth.</p>
           </div>
           <div>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#fff' }}>3. Chat & Ask</h3>
-            <p style={{ fontSize: '1rem' }}>Ask complex technical questions and get instant, accurate logic.</p>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#fff' }}>3. Ask RepoMind AI</h3>
+            <p style={{ fontSize: '1rem' }}>Interact with your codebase using RepoMind AI and get precise, context aware answers in seconds.</p>
           </div>
         </div>
       </div>
