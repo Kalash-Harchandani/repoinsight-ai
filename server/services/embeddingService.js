@@ -1,24 +1,29 @@
 import { GoogleGenAI } from "@google/genai";
 import { Pinecone } from "@pinecone-database/pinecone";
-import dotenv from "dotenv";
 
-dotenv.config();
+// 🔹 Lazy initialization helpers
+let genAI;
+let pc;
 
-/**
- * =========================
- * 🔧 Initialize Clients
- * =========================
- */
+const getGenAI = () => {
+  if (!genAI) {
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error("GEMINI_API_KEY is not set in environment variables.");
+    }
+    genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  }
+  return genAI;
+};
 
-// Gemini (NEW SDK)
-const genAI = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
-
-// Pinecone
-const pc = new Pinecone({
-  apiKey: process.env.PINECONE_API_KEY,
-});
+const getPC = () => {
+  if (!pc) {
+    if (!process.env.PINECONE_API_KEY) {
+      throw new Error("PINECONE_API_KEY is not set in environment variables.");
+    }
+    pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
+  }
+  return pc;
+};
 
 /**
  * =========================
@@ -28,7 +33,8 @@ const pc = new Pinecone({
  */
 export const generateEmbedding = async (text) => {
   try {
-    const response = await genAI.models.embedContent({
+    const ai = getGenAI();
+    const response = await ai.models.embedContent({
       model: "gemini-embedding-001", // ✅ correct model
       contents: text,              // ✅ correct format
       config: {
@@ -55,7 +61,8 @@ export const indexCodebase = async (
   namespace = "default"
 ) => {
   try {
-    const index = pc.index(indexName);
+    const pinecone = getPC();
+    const index = pinecone.index(indexName);
     const vectors = [];
 
     console.log(`🚀 Generating embeddings for ${files.length} files in namespace: ${namespace}...`);

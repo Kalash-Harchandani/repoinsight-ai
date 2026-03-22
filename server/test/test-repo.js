@@ -1,6 +1,15 @@
-import { cloneRepo } from './services/githubService.js';
-import { crawlRepo } from './services/crawlerService.js';
-import { indexCodebase } from './services/embeddingService.js';
+import { cloneRepo } from '../services/githubService.js';
+import { crawlRepo } from '../services/crawlerService.js';
+import { indexCodebase } from '../services/embeddingService.js';
+import crypto from 'crypto';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+dotenv.config({ path: join(__dirname, '../.env') });
 
 const testUrl = 'https://github.com/Kalash-Harchandani/repoinsight-ai';
 
@@ -20,7 +29,8 @@ async function runFullRepoFlow() {
 
     // 3. Index the codebase
     console.log('\n3. Indexing codebase into Pinecone...');
-    const namespace = Buffer.from(testUrl).toString('base64').substring(0, 16); // Unique ID for repo
+    // SHA-256 hash of the repo URL (first 16 chars)
+    const namespace = crypto.createHash('sha256').update(testUrl).digest('hex').substring(0, 16);
     await indexCodebase(files, undefined, namespace);
     console.log(`✅ Indexing Success! (Namespace: ${namespace})`);
 
