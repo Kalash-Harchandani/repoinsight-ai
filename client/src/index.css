@@ -504,3 +504,104 @@ footer {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  /* Navbar */
+  nav {
+    padding: 0 1.5rem;
+    width: calc(100% - 2rem);
+    height: 60px;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  
+  .nav-links {
+    gap: 1.5rem;
+  }
+  
+  .nav-link {
+    font-size: 0.9rem;
+  }
+
+  /* HomeView */
+  .view-home {
+    padding: 2rem 1.5rem;
+  }
+  
+  .home-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  
+  .bg-octocat {
+    width: 600px;
+    height: 600px;
+    top: 50%;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1.5px;
+  }
+  
+  p {
+    font-size: 1rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .card-minimal .input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* AnalysisView */
+  .view-analysis {
+    padding: 1.5rem 0;
+  }
+
+  .repomind-chat-container {
+    padding: 0 1rem 120px 1rem;
+  }
+
+  .message-bubble {
+    padding: 1.5rem;
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .chat-input-wrapper {
+    width: calc(100% - 2rem);
+    bottom: 1.5rem;
+  }
+
+  .chat-input-container {
+    padding: 0.4rem 0.8rem;
+  }
+
+  .chat-input-container input {
+    font-size: 1rem;
+    padding: 0.6rem 0;
+  }
+
+  .chat-send-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  /* Footer */
+  .footer-content {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .footer-divider {
+    display: none;
+  }
+}
