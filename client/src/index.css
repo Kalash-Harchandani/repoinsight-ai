@@ -507,6 +507,16 @@ footer {
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
+  /* Allow scrolling on HomeView */
+  .App.app-home {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .App.app-home .main-container {
+    flex: none;
+    overflow: visible;
+  }
+
   /* Navbar */
   nav {
     padding: 0 1.5rem;

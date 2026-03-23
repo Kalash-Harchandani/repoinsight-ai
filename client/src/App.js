@@ -97,7 +97,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className={`App ${view === 'home' ? 'app-home' : 'app-analysis'}`}>
       <Navbar view={view} setView={handleViewChange} />
 
       <main className={`main-container ${view === 'home' ? 'view-home' : 'view-analysis'}`}>
